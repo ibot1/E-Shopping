@@ -20,7 +20,8 @@ public class ItemService {
 	ItemRepository itemRepository;
 	
 	public void addItems() {
-		String filenames = transactionServices.getFileNames();
+		String filenames = transactionServices.getFileNames() + ",";
+		
 		String tmp = "";
 		
 		
@@ -29,15 +30,18 @@ public class ItemService {
 			else {
 				
 				List<String> tmp1 = formatFileNames(tmp);
-				Item item = new Item();
-				item.setPriceForEach(Double.valueOf(tmp1.get(2)));
-				//be careful of duplicating the stock number [hint use try-catch]
-				item.setQuantityInStock(Integer.valueOf(tmp1.get(3)));
-				item.setUniqueId(tmp1.get(0).toLowerCase() + tmp1.get(1).toLowerCase());
-				try{
+				//System.out.println("Filesnames " + filenames);System.out.println(tmp + " " + tmp1.toString() );
+				
+				Item item = itemRepository.findByUniqueId(tmp1.get(0).toLowerCase() + tmp1.get(1).toLowerCase());
+				if(item != null) {
+					continue;
+				}else {
+					item = new Item();
+					item.setPriceForEach(Integer.valueOf(tmp1.get(2)));
+					//be careful of duplicating the stock number [hint use try-catch]
+					item.setQuantityInStock(Integer.valueOf(tmp1.get(3)));
+					item.setUniqueId(tmp1.get(0).toLowerCase() + tmp1.get(1).toLowerCase());
 					itemRepository.save(item);
-				}catch(Exception err) {
-					System.out.println("Duplicate Key");
 				}
 				tmp = "";
 			}
@@ -46,7 +50,7 @@ public class ItemService {
 	}
 	
 	public List<String> formatFileNames(String filename) {
-		System.out.println(filename);
+		//System.out.println(filename);
 		List<String> tmp = new ArrayList<String>();
 		String tmp1 = "";
 		
@@ -56,9 +60,12 @@ public class ItemService {
 		}
 		tmp.add(tmp1.substring(0, tmp1.length() - 4));
 		
+		//System.out.println(filename + " " + tmp);
+		
 		return tmp;
 	}
 }
+
 
 
 //Remember to fix the getFileNames() from String to a List

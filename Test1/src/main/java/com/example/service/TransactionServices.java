@@ -6,12 +6,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.model.Request;
+import com.example.repository.ItemRepository;
+import com.example.repository.RequestRepository;
 
 @Service
 public class TransactionServices {
 	
 	public static Map<String, Integer> cart = new HashMap<String, Integer>();
+	
+	@Autowired
+	ItemRepository itemRepository;
+	
+	@Autowired
+	RequestRepository requestRepository;
 	
 	public List<String> stringToJson(String tmp){
 		List<String> tmp1 = new ArrayList<String>();
@@ -47,5 +58,41 @@ public class TransactionServices {
 		
 		return filenames.substring(0, filenames.length() - 1);
 	}
+	
+	String findKey(String key) {
+		String tmp = "";
+		int ctr = 0;
+		for(int i = 0; i < key.length(); i++) {
+			if(key.charAt(i) == '_')	ctr++;
+			if(ctr == 2)	break;
+			if(key.charAt(i) != '_')	tmp += key.charAt(i);
+		}
+		return tmp;
+	}
+	
+	public void confirmTransaction(String email) {
+		
+		String id;
+		
+		for(String key : cart.keySet()) {
+			if(cart.get(key) > 0) {
+				Request request = new Request();
+				id = findKey(key).toLowerCase();
+				Integer price = itemRepository.findByUniqueId(id).getPriceForEach();
+				request.setPrice(price);
+				request.setQuantity(cart.get(key));
+				request.setItemName(id);
+				request.setEmail(email);
+				System.out.println(cart);
+				requestRepository.save(request);
+			}else	continue;
+		}
+		cart =  new HashMap<String, Integer>();
+	}
+	
+	public List<Request> getAllTransactions(String email){
+		return requestRepository.findAllByEmail(email);
+	}
 }
+//something good to do with transaction=id like search
 //-javaagent:S:\AppServerAgent-4.5.9.25648\ver4.5.9.25648\javaagent.jar

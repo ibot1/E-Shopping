@@ -134,7 +134,7 @@ export default class TrendingView extends Component {
     container.push(col2);
     container.push(col3);
 
-    console.log(container);
+    //console.log(container);
     return container;
   }
 
@@ -225,7 +225,7 @@ export default class TrendingView extends Component {
         var arr = this.updateAllowed(props);
         //console.log(arr);
         var carts = this.populateCart(res, arr[0]);
-        console.log(carts);
+        //console.log(carts);
         this.setState({
           path1: {
             allowed: arr[0],

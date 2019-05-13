@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.model.User;
+import com.example.model.UserInfo;
+import com.example.repository.UserInfoRepository;
 import com.example.repository.UserRepository;
 
 @Service
@@ -11,6 +13,9 @@ public class UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserInfoRepository userInfoRepository;
 
 	public String retrieveFormattedPassword(String oldPassword) {
 		
@@ -49,13 +54,14 @@ public class UserService {
 	
 	public boolean validateUser(String email, String password) {
 		User user = userRepository.findUserByEmail(email.toLowerCase());
-		System.out.println(user.getEmail() + " " + user.getPassword() + " " + password);
+		//System.out.println(user.getEmail() + " " + user.getPassword() + " " + password);
 		if(user == null || !password.equals(user.getPassword()))	return false;
 		return true;
 	}
 	
 	public boolean registerUser(String email, String password) {
 		email = email.toLowerCase();
+		password = password.toLowerCase();
 		//password = retrieveFormattedPassword(password.toLowerCase());
 		User user = userRepository.findUserByEmail(email);
 
@@ -70,6 +76,34 @@ public class UserService {
 	public boolean updateAccountBalance(String email, String password) {
 		//not completely sure of what we are going to do here
 		return true;
+	}
+	
+	public UserInfo postProfileInfo(String email) {
+		User user = userRepository.findUserByEmail(email);
+		
+		if(user != null) {
+			UserInfo userInfo = userInfoRepository.findByUser(user);
+			if(userInfo == null) {
+				userInfo = new UserInfo();
+				userInfo.setEmail(email);
+			}else 	return userInfo;
+			return userInfo;
+		}
+		return null;
+	}
+	
+	public void getProfileInfo(UserInfo userInfo) {
+		User user = userRepository.findUserByEmail(userInfo.getEmail().toLowerCase());
+		System.out.println(userInfo);
+		if(user != null) {
+			
+			UserInfo userInfoOld = userInfoRepository.findByUser(user);
+			if(userInfoOld == null)		userInfoOld = new UserInfo();
+			userInfoOld.mergeUpdate(userInfo);
+			userInfoOld.setUser(user);
+			System.out.println(userInfoOld);
+			userInfoRepository.save(userInfoOld);
+		}
 	}
 }
 //Think of including password requirement 

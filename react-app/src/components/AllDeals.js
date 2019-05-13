@@ -134,8 +134,23 @@ export default class AllDeals1 extends Component {
     container.push(col2);
     container.push(col3);
 
-    console.log(container);
+    //console.log(container);
     return container;
+  }
+
+  extractPriceAndQuantiy(filename) {
+    filename = filename.substring(0, filename.length - 4) + "_";
+    var arr = [],
+      tmp = "";
+
+    for (let i = 0; i < filename.length; i++) {
+      if (filename[i] !== "_") tmp += filename[i];
+      else {
+        arr.push(tmp);
+        tmp = "";
+      }
+    }
+    return arr;
   }
 
   populateCart(res, path1) {
@@ -150,6 +165,7 @@ export default class AllDeals1 extends Component {
         phoneColumn.push(
           <div key={key}>
             <img src={require("../images/" + key)} alt="deal" />
+            <div className="chk">${this.extractPriceAndQuantiy(key)[2]}</div>
             <Item
               id={key}
               key={key}
@@ -162,6 +178,7 @@ export default class AllDeals1 extends Component {
         tvColumn.push(
           <div key={key}>
             <img src={require("../images/" + key)} alt="deal" />
+            <div className="chk">${this.extractPriceAndQuantiy(key)[2]}</div>
             <Item
               id={key}
               key={key}
@@ -174,6 +191,7 @@ export default class AllDeals1 extends Component {
         computerColumn.push(
           <div key={key}>
             <img src={require("../images/" + key)} alt="deal" />
+            <div className="chk">${this.extractPriceAndQuantiy(key)[2]}</div>
             <Item
               id={key}
               key={key}
@@ -202,6 +220,7 @@ export default class AllDeals1 extends Component {
       }
     }
     m[tmp] = tmp;
+    //console.log(m);
     return m;
   }
 
@@ -225,7 +244,7 @@ export default class AllDeals1 extends Component {
         var arr = this.updateAllowed(props);
         //console.log(arr);
         var carts = this.populateCart(res, arr[0]);
-        console.log(carts);
+        //console.log(carts);
         this.setState({
           path1: {
             allowed: arr[0],

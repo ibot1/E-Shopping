@@ -1,7 +1,5 @@
 package com.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -22,11 +19,7 @@ public class Item {
 	@Column(updatable = false, unique = true)
 	private String uniqueId; 
 	private Integer quantityInStock;
-	private Double priceForEach;
-
-	
-	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "item", orphanRemoval = true)
-	private List<Request> requests = new ArrayList<>();
+	private Integer priceForEach;
 
 	
 	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "item", orphanRemoval = true)
@@ -46,20 +39,13 @@ public class Item {
 	public void setQuantityInStock(Integer quantityInStock) {
 		this.quantityInStock = quantityInStock;
 	}
-	public Double getPriceForEach() {
+	public Integer getPriceForEach() {
 		return priceForEach;
 	}
-	public void setPriceForEach(Double priceForEach) {
+	public void setPriceForEach(Integer priceForEach) {
 		this.priceForEach = priceForEach;
 	}
 
-	public List<Request> getRequests() {
-		return requests;
-	}
-
-	public void setRequests(List<Request> requests) {
-		this.requests = requests;
-	}
 
 	public Inventory getInventory() {
 		return inventory;

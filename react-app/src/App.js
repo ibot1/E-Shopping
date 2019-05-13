@@ -6,6 +6,10 @@ import CheckoutPage from "./components/Checkout";
 import DashboardPage from "./components/Dashboard";
 import AdvancedSettings from "./components/search/AdvancedSettings";
 import Item from "./components/Item";
+import PersonalInformation from "./components/PersonalInformation";
+import LoginSecurity from "./components/LoginSecurity";
+import AllTransactions from "./components/AllTransactions";
+import PaymentOptions from "./components/PaymentOptions";
 
 export default class App extends Component {
   render() {
@@ -19,6 +23,14 @@ export default class App extends Component {
           <Route exact path="/Checkout" component={CheckoutPage} />
           <Route exact path="/ASettings" component={AdvancedSettings} />
           <Route exact path="/Item" component={Item} />
+          <Route
+            exact
+            path="/PersonalInformation"
+            component={PersonalInformation}
+          />
+          <Route exact path="/LoginSecurity" component={LoginSecurity} />
+          <Route exact path="/AllTransactions" component={AllTransactions} />
+          <Route exact path="/PaymentOptions" component={PaymentOptions} />
         </Router>
       </div>
     );

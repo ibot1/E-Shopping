@@ -2,17 +2,21 @@ package com.example.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -36,7 +40,19 @@ public class User {
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date createdAt;
 	
-	public User() {}
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@JsonIgnore
+	private UserInfo userInfo;
+	
+	@JsonFormat(pattern = "yyyy-mm-dd")
+	private Date lastLoggedin;
+	
+	
+	
+	
+	public User() {
+		this.setLastLoggedin();
+	}
 	
 	public double getAccountBalance() {
 		return accountBalance;
@@ -72,9 +88,19 @@ public class User {
 				+ createdAt + "]";
 	}
 	
-	//Possible some personal information like address and contact information
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
 	
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
 
-	
-	
+	public Date getLastLoggedin() {
+		return lastLoggedin;
+	}
+
+	public void setLastLoggedin() {
+		this.lastLoggedin = new Date();
+	}	
 }

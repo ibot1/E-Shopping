@@ -3,6 +3,7 @@ import "../App.css";
 import TrendingView from "./TrendingView";
 import AllDeals from "./AllDeals";
 import { Link } from "react-router-dom";
+//import FileUpload from "./FileUpload";
 //import axios from "axios";
 
 export default class Shopping extends Component {
@@ -60,6 +61,9 @@ export default class Shopping extends Component {
         <TrendingView />
         <br />
         <AllDeals query={this.state.query} />
+        <br />
+        <br />
+        {/*<FileUpload />*/}
       </div>
     );
   }

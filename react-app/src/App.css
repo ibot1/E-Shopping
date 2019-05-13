@@ -82,3 +82,26 @@
     text-align: center;
     height: 100vh;
 }
+
+.DashButtons {
+    height: 30vh;
+    width: 43vh;
+    color: dimgray;
+}
+
+.InputField {
+    height: 5vh;
+    width: 93vh;
+}
+
+.CircleButton {
+    border-radius: 10vh;
+    height: 30vh;
+    width: 30vh;
+}
+
+.Table {
+    border: 1px solid white;
+    padding: solid white 12px;
+    font-size: 30px;
+}
