@@ -43,14 +43,33 @@ export default class Checkout extends Component {
     return dic;
   }
 
+  extractPriceAndQuantiy(filename) {
+    filename = filename.substring(0, filename.length - 4) + "_";
+    var arr = [],
+      tmp = "";
+
+    for (let i = 0; i < filename.length; i++) {
+      if (filename[i] !== "_") tmp += filename[i];
+      else {
+        arr.push(tmp);
+        tmp = "";
+      }
+    }
+    return arr;
+  }
+
   populateShoppingCart() {
     var arr = Object.entries(this.state.carts),
       res = [];
     for (let i = 0; i < arr.length; i++) {
       if (arr[i][1] > 0) {
+        console.log(arr[i]);
         res.push(
           <div key={arr[i][0]} className="chk">
             <img src={require("../images/" + arr[i][0])} alt="deal" />
+            <div className="chk">
+              ${this.extractPriceAndQuantiy(arr[i][0])[2]}
+            </div>
             <Item id={arr[i][0]} key={arr[i][0]} value={Number(arr[i][1])} />
             <br />
           </div>
